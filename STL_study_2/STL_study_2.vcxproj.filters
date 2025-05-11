@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\Allocator">
+      <UniqueIdentifier>{dd1b8fbf-26c1-456f-a908-5e87dfe6f67f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Algorithms">
+      <UniqueIdentifier>{83f49322-0c99-4baf-aaf4-2a87d9c122a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Associative Container">
+      <UniqueIdentifier>{2530ab92-23a5-4a15-bc3c-2823c98c1cdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Functor">
+      <UniqueIdentifier>{6bad5a0e-196c-40bc-8bc9-43889dfdf922}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="first_allocator.cpp">
+      <Filter>源文件\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="second_allocator.cpp">
+      <Filter>源文件\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="JJalloc.cpp">
+      <Filter>源文件\Allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="algobase.cpp">
+      <Filter>源文件\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="set_algo.cpp">
+      <Filter>源文件\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="heap_algo.cpp">
+      <Filter>源文件\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="other_algo.cpp">
+      <Filter>源文件\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="Arithmetic.cpp">
+      <Filter>源文件\Functor</Filter>
+    </ClCompile>
+    <ClCompile Include="Relational.cpp">
+      <Filter>源文件\Functor</Filter>
+    </ClCompile>
+    <ClCompile Include="hashtable.cpp">
+      <Filter>源文件\Associative Container</Filter>
+    </ClCompile>
+    <ClCompile Include="set.cpp">
+      <Filter>源文件\Associative Container</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="numeric.cpp">
+      <Filter>源文件\Algorithms</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1591059166 source:f:\project\stl_study\main.cpp
+	<iostream>
+	"func.h"
+
+1591059182 f:\project\stl_study\func.h
+	<stdio>
+

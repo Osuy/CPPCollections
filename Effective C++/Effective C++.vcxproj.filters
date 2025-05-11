@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="05_实现\26：延迟变量的定义.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="05_实现\31：降低文件间的依赖.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="06_继承和面向对象设计\case 32：继承必须塑模出is-a的关系.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 41：模板的隐式接口与编译器多态.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 42：typename.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 43：类模板基类的函数.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 44：与参数无关的代码抽离template.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 45：利用成员模板函数接受所有兼容类型.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 46：需要类型转化时请将函数定义为类模板的inline友元函数.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 47：traits classed表现类型信息.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="07_template\case 48：TMP元编程.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="08_定制new和delete\case 49：了解new-handler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="08_定制new和delete\case 50：自定义new和delete的理由.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="08_定制new和delete\case 51：自定义new和delete的原则.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="08_定制new和delete\case 52：写了placement new就也要写placement delete.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="09_杂项讨论\case 53：不要忽略编译器的警告.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="09_杂项讨论\case 54&amp;55：熟悉tr1和boost.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="01_习惯C++\1：将C++视为四种语言.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="01_习惯C++\2：const、enum、inline.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\23：以no-member no-friend func代替 member func.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\25：不抛异常的swap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="05_实现\27：尽量少转型.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="05_实现\28：尽量避免返回内部对象的引用.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="06_继承和面向对象设计\case32：public继承塑膜出is-a关系.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="01_习惯C++\3：尽可能使用const.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="01_习惯C++\4：使用前初始化.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="02_构造、析构、赋值\5：默认生成的类成员函数.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="02_构造、析构、赋值\6 7 8 9 10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="02_构造、析构、赋值\11：一个尽善尽美的operator=.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="02_构造、析构、赋值\12：自定义拷贝和赋值的隐患.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="03_资源管理\13 14 15 16 17.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\18：让接口容易被正确使用，不容易被误用.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\case 20：宁以常引用传递参数.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\case 20 21 22.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\case 24：若所有参数皆需转换，声明为no-member.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\20 21 22 .h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="04_设计与声明\24：为左乘等运算声明为no-member.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="05_实现\29：异常安全.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="05_实现\30：关于inline的一切.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

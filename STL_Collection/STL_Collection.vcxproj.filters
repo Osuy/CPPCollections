@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Sort">
+      <UniqueIdentifier>{645f5f5a-f88a-40be-92a9-b25eba81ed55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\C++Base">
+      <UniqueIdentifier>{2c0a7ce7-f64f-45ea-9e0a-6203e2b91518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataStruct">
+      <UniqueIdentifier>{51b74ac4-564b-46d5-a200-61f9ad6da6fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Design pattern">
+      <UniqueIdentifier>{c255172f-3261-4a51-9750-fcd8b002ba0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\STL">
+      <UniqueIdentifier>{a4f8beb4-2c8f-4792-aff3-e4f94e9d81ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\STL\AssociativeContainer">
+      <UniqueIdentifier>{e803b437-414c-43fc-99c3-af87cd163f39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\STL\SequenceContainer">
+      <UniqueIdentifier>{3a9636f9-a2f6-46e5-99ea-6639790b35c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\C++Base\C++11">
+      <UniqueIdentifier>{228415e1-ab42-4d4e-ae89-8f7e56e38c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\C++Base\C++Thread">
+      <UniqueIdentifier>{468f6738-e967-46d0-b1b2-5ea46a6ef6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\STL\Algorithms">
+      <UniqueIdentifier>{a956139e-b36f-4fe4-a1e0-24517679ec7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库">
+      <UniqueIdentifier>{041733a6-cd46-49df-8462-27d68814fe5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\其他">
+      <UniqueIdentifier>{db7d0974-cb36-461a-89ff-2224e6c7b9a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\1_分治法">
+      <UniqueIdentifier>{88a4aff1-b0b5-4cfc-89fd-9db67baf106f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\2_动态规划">
+      <UniqueIdentifier>{772ea6fb-6d5d-49aa-83d3-2ac2b8bd9a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\3_贪心算法">
+      <UniqueIdentifier>{0d0e4759-bf51-429f-bf84-04225be15bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\4_回溯法">
+      <UniqueIdentifier>{701b2f54-ec0d-4448-896b-47f0f6b2fa17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\5_分支限界法">
+      <UniqueIdentifier>{4288fa02-05e6-4e6a-b1dc-42ae0ef6ac18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Design pattern\TemplateMethod">
+      <UniqueIdentifier>{8a50df03-2cea-4adf-8e9f-f9173945bb37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Design pattern\SingleResiponsibility">
+      <UniqueIdentifier>{5514bb45-2aa7-46be-b627-04ff1900fa49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Design pattern\ObjectCreator">
+      <UniqueIdentifier>{59a8c815-0830-467f-9877-f45b9a110d97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Design pattern\ObjectPerform">
+      <UniqueIdentifier>{13210998-45f4-4765-bb18-c4aa30c0670b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Design pattern\InterfaceDivide">
+      <UniqueIdentifier>{65318048-26b1-42ed-a9ce-db7986fc9c0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Design pattern\StateChange">
+      <UniqueIdentifier>{853f7f78-3391-4731-9994-e3b7f58ea12e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\滑动窗口">
+      <UniqueIdentifier>{34d1a154-0a5b-422c-a644-e4f018f414b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\单调栈">
+      <UniqueIdentifier>{c63decb0-4e6d-401f-a836-d9244f126200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\二叉树">
+      <UniqueIdentifier>{19037f26-ce68-4363-b17c-647ecf4cb2f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\算法题库\链表">
+      <UniqueIdentifier>{b1cb5023-35da-4207-8291-a3cc38cd32a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{4700be22-af2d-404c-a51a-0f643ce8c056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Boost">
+      <UniqueIdentifier>{4e23bc56-4005-4475-82f4-c14374bea6fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\C++Base\模板">
+      <UniqueIdentifier>{ce919a23-7d8a-43aa-bb74-3e23994de995}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="STL_Collection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MergeSort.h">
+      <Filter>Source Files\Sort</Filter>
+    </ClCompile>
+    <ClCompile Include="8_Anwser and Exp.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClCompile>
+    <ClCompile Include="SqString.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClCompile>
+    <ClCompile Include="992_恰好K个不同元素的子数组.h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Vector.h">
+      <Filter>Source Files\STL\SequenceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>Source Files\STL\SequenceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="Deque.h">
+      <Filter>Source Files\STL\SequenceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>Source Files\STL\SequenceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>Source Files\STL\SequenceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>Source Files\STL\SequenceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="Priority_queue.h">
+      <Filter>Source Files\STL\SequenceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTable.h">
+      <Filter>Source Files\STL\AssociativeContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="HashSetAndMap.h">
+      <Filter>Source Files\STL\AssociativeContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="Set And Map.h">
+      <Filter>Source Files\STL\AssociativeContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleSort.h">
+      <Filter>Source Files\Sort</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectionSort.h">
+      <Filter>Source Files\Sort</Filter>
+    </ClInclude>
+    <ClInclude Include="InsertionSort.h">
+      <Filter>Source Files\Sort</Filter>
+    </ClInclude>
+    <ClInclude Include="ShellSort.h">
+      <Filter>Source Files\Sort</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickSort.h">
+      <Filter>Source Files\Sort</Filter>
+    </ClInclude>
+    <ClInclude Include="Numeric.h">
+      <Filter>Source Files\STL\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Algobase.h">
+      <Filter>Source Files\STL\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="SetAlgo.h">
+      <Filter>Source Files\STL\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="OtherAlgo.h">
+      <Filter>Source Files\STL\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="Mem_Collection.h">
+      <Filter>Source Files\C++Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Function Pointer.h">
+      <Filter>Source Files\C++Base</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyWord.h">
+      <Filter>Source Files\C++Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Class.h">
+      <Filter>Source Files\C++Base</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapSort.h">
+      <Filter>Source Files\Sort</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack and Queue.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Exp_Stack.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Move and RValueReference.h">
+      <Filter>Source Files\C++Base\C++11</Filter>
+    </ClInclude>
+    <ClInclude Include="234Tree and RBTree.h">
+      <Filter>Source Files\STL\AssociativeContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearList.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Recursion.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="QuickSort_Thread.h">
+      <Filter>Source Files\C++Base\C++Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Array and Matrix and Table.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="棋盘覆盖问题.h">
+      <Filter>Source Files\算法题库\1_分治法</Filter>
+    </ClInclude>
+    <ClInclude Include="连续邮资问题.h">
+      <Filter>Source Files\算法题库\4_回溯法</Filter>
+    </ClInclude>
+    <ClInclude Include="快排相关.h">
+      <Filter>Source Files\算法题库\1_分治法</Filter>
+    </ClInclude>
+    <ClInclude Include="FindPosition.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="KKing.h">
+      <Filter>Source Files\算法题库\4_回溯法</Filter>
+    </ClInclude>
+    <ClInclude Include="寻找等差数列.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="最大连续子段.h">
+      <Filter>Source Files\算法题库\1_分治法</Filter>
+    </ClInclude>
+    <ClInclude Include="分治法概念.h">
+      <Filter>Source Files\算法题库\1_分治法</Filter>
+    </ClInclude>
+    <ClInclude Include="动态规划.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="最长公共子序列.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="0-1背包.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="Floyd.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="贪心算法.h">
+      <Filter>Source Files\算法题库\3_贪心算法</Filter>
+    </ClInclude>
+    <ClInclude Include="活动选择.h">
+      <Filter>Source Files\算法题库\3_贪心算法</Filter>
+    </ClInclude>
+    <ClInclude Include="背包问题.h">
+      <Filter>Source Files\算法题库\3_贪心算法</Filter>
+    </ClInclude>
+    <ClInclude Include="回溯法.h">
+      <Filter>Source Files\算法题库\4_回溯法</Filter>
+    </ClInclude>
+    <ClInclude Include="0-1背包(回溯).h">
+      <Filter>Source Files\算法题库\4_回溯法</Filter>
+    </ClInclude>
+    <ClInclude Include="分支限界法.h">
+      <Filter>Source Files\算法题库\5_分支限界法</Filter>
+    </ClInclude>
+    <ClInclude Include="N皇后.h">
+      <Filter>Source Files\算法题库\4_回溯法</Filter>
+    </ClInclude>
+    <ClInclude Include="string封装类.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="括号匹配.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="删除重复元素.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="实现简单的动态数组.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="carpet.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategy.h">
+      <Filter>Source Files\Design pattern\TemplateMethod</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Source Files\Design pattern\TemplateMethod</Filter>
+    </ClInclude>
+    <ClInclude Include="Decorator.h">
+      <Filter>Source Files\Design pattern\SingleResiponsibility</Filter>
+    </ClInclude>
+    <ClInclude Include="Bridge.h">
+      <Filter>Source Files\Design pattern\SingleResiponsibility</Filter>
+    </ClInclude>
+    <ClInclude Include="Prototype.h">
+      <Filter>Source Files\Design pattern\ObjectCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Source Files\Design pattern\ObjectCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractFactory.h">
+      <Filter>Source Files\Design pattern\ObjectCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder.h">
+      <Filter>Source Files\Design pattern\ObjectCreator</Filter>
+    </ClInclude>
+    <ClInclude Include="试题组合.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="设计模式.h">
+      <Filter>Source Files\Design pattern</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Source Files\Design pattern\ObjectPerform</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyWeight.h">
+      <Filter>Source Files\Design pattern\ObjectPerform</Filter>
+    </ClInclude>
+    <ClInclude Include="Faceade.h">
+      <Filter>Source Files\Design pattern\InterfaceDivide</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxy.h">
+      <Filter>Source Files\Design pattern\InterfaceDivide</Filter>
+    </ClInclude>
+    <ClInclude Include="Adapter.h">
+      <Filter>Source Files\Design pattern\InterfaceDivide</Filter>
+    </ClInclude>
+    <ClInclude Include="Mediator.h">
+      <Filter>Source Files\Design pattern\InterfaceDivide</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Source Files\Design pattern\StateChange</Filter>
+    </ClInclude>
+    <ClInclude Include="Memento.h">
+      <Filter>Source Files\Design pattern\StateChange</Filter>
+    </ClInclude>
+    <ClInclude Include="0_滑动窗口.h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="209_最小子数组.h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="159_最多包含两个不同字符的最长子串.h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="424_替换后的最长重复字符.h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="湍流子数组.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="湍流子数组(滑动窗口).h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="UnionFind.h">
+      <Filter>Source Files\DataStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="最长无重复子串.h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="最长连续子序列.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="树的最长连通路径.h">
+      <Filter>Source Files\算法题库\其他</Filter>
+    </ClInclude>
+    <ClInclude Include="搜索树的个数.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="单调栈.h">
+      <Filter>Source Files\算法题库\单调栈</Filter>
+    </ClInclude>
+    <ClInclude Include="数组最大矩形.h">
+      <Filter>Source Files\算法题库\单调栈</Filter>
+    </ClInclude>
+    <ClInclude Include="最长有效括号对.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="颜色分类(leetcode_75).h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="76_最小覆盖子串%28leetcode_76%29.h">
+      <Filter>Source Files\算法题库\滑动窗口</Filter>
+    </ClInclude>
+    <ClInclude Include="二叉树.h">
+      <Filter>Source Files\算法题库\二叉树</Filter>
+    </ClInclude>
+    <ClInclude Include="二叉树的三种非递归遍历.h">
+      <Filter>Source Files\算法题库\二叉树</Filter>
+    </ClInclude>
+    <ClInclude Include="单词拆分.h">
+      <Filter>Source Files\算法题库\2_动态规划</Filter>
+    </ClInclude>
+    <ClInclude Include="判断是否有环.h">
+      <Filter>Source Files\算法题库\链表</Filter>
+    </ClInclude>
+    <ClInclude Include="AVL树的实现.h">
+      <Filter>Source Files\算法题库\二叉树</Filter>
+    </ClInclude>
+    <ClInclude Include="套接字、地址、端口.h">
+      <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="smart_ptr.h">
+      <Filter>Source Files\Boost</Filter>
+    </ClInclude>
+    <ClInclude Include="type_traits.h">
+      <Filter>Source Files\C++Base\模板</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
