@@ -21,7 +21,7 @@
     <ClInclude Include="05_实现\31：降低文件间的依赖.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="06_继承和面向对象设计\case 32：继承必须塑模出is-a的关系.h">
+    <ClInclude Include="06_继承和面向对象设计\32：public继承必须塑模出is-a的关系.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="07_template\case 41：模板的隐式接口与编译器多态.h">
@@ -84,9 +84,6 @@
     <ClInclude Include="05_实现\28：尽量避免返回内部对象的引用.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="06_继承和面向对象设计\case32：public继承塑膜出is-a关系.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="01_习惯C++\3：尽可能使用const.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -130,6 +127,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="05_实现\30：关于inline的一切.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="06_继承和面向对象设计\33：避免遮盖继承而来的名称.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
