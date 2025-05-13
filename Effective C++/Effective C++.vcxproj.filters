@@ -132,6 +132,9 @@
     <ClInclude Include="06_继承和面向对象设计\33：避免遮盖继承而来的名称.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="06_继承和面向对象设计\34.区分接口继承和实现继承.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
