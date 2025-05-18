@@ -24,10 +24,10 @@
     <ClInclude Include="06_继承和面向对象设计\32：public继承必须塑模出is-a的关系.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 41：模板的隐式接口与编译器多态.h">
+    <ClInclude Include="07_template\41：模板的隐式接口与编译器多态.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 42：typename.h">
+    <ClInclude Include="07_template\42：typename.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="07_template\case 43：类模板基类的函数.h">
@@ -132,7 +132,7 @@
     <ClInclude Include="06_继承和面向对象设计\33：避免遮盖继承而来的名称.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="06_继承和面向对象设计\34.区分接口继承和实现继承.h">
+    <ClInclude Include="06_继承和面向对象设计\34：区分接口继承和实现继承.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="06_继承和面向对象设计\35：考虑非虚函数.h">
@@ -142,6 +142,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="06_继承和面向对象设计\37：绝不覆盖默认参数.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="06_继承和面向对象设计\38：用复合塑模出has-a.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="06_继承和面向对象设计\39：明智地使用private继承.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="06_继承和面向对象设计\40：慎用多重继承.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
