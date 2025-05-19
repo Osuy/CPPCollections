@@ -44,8 +44,8 @@
     <ClInclude Include="06_继承和面向对象设计\40：慎用多重继承.h" />
     <ClInclude Include="07_template\41：模板的隐式接口与编译器多态.h" />
     <ClInclude Include="07_template\42：typename.h" />
-    <ClInclude Include="07_template\case 43：类模板基类的函数.h" />
-    <ClInclude Include="07_template\case 44：与参数无关的代码抽离template.h" />
+    <ClInclude Include="07_template\43：类模板基类的成员.h" />
+    <ClInclude Include="07_template\44：template的二进制浮夸.h" />
     <ClInclude Include="07_template\case 45：利用成员模板函数接受所有兼容类型.h" />
     <ClInclude Include="07_template\case 46：需要类型转化时请将函数定义为类模板的inline友元函数.h" />
     <ClInclude Include="07_template\case 47：traits classed表现类型信息.h" />

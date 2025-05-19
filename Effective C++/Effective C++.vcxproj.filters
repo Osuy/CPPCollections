@@ -30,10 +30,10 @@
     <ClInclude Include="07_template\42：typename.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 43：类模板基类的函数.h">
+    <ClInclude Include="07_template\43：类模板基类的成员.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 44：与参数无关的代码抽离template.h">
+    <ClInclude Include="07_template\44：template的二进制浮夸.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="07_template\case 45：利用成员模板函数接受所有兼容类型.h">
