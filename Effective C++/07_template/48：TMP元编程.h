@@ -35,4 +35,10 @@ struct Factorial<0>
 	它就相当于直接拿到了答案，不仅比函数递归快，还比函数循环快
 	只是它的使用不那么方便，因为你必须在模板参数列表里指定一个常量。
 	如：Factorial<10>::value
+
+
+	TMP技术
+		expression templates
+		policy-based design
+		CRTP
 */

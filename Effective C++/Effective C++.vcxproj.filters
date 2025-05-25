@@ -36,25 +36,25 @@
     <ClInclude Include="07_template\44：template的二进制浮夸.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 45：利用成员模板函数接受所有兼容类型.h">
+    <ClInclude Include="07_template\45：利用成员模板函数接受所有兼容类型.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 46：需要类型转化时请将函数定义为类模板的inline友元函数.h">
+    <ClInclude Include="07_template\46：为支持隐式类型转换，使用类模板的inline友元函数.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 47：traits classed表现类型信息.h">
+    <ClInclude Include="07_template\47：traits classed表现类型信息.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="07_template\case 48：TMP元编程.h">
+    <ClInclude Include="07_template\48：TMP元编程.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="08_定制new和delete\case 49：了解new-handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="08_定制new和delete\case 50：自定义new和delete的理由.h">
+    <ClInclude Include="08_定制new和delete\50：自定义new和delete的理由.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="08_定制new和delete\case 51：自定义new和delete的原则.h">
+    <ClInclude Include="08_定制new和delete\51：自定义new和delete的原则.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="08_定制new和delete\case 52：写了placement new就也要写placement delete.h">
