@@ -1,6 +1,6 @@
 #pragma once
-#include <stdlib.h>
-#include "Stack and Queue.h"
+#include <vector>
+//#include "Stack and Queue.h"
 /*
 	图的基本术语
 		端点和邻接点
@@ -39,39 +39,44 @@
 
 */
 
-#define MAXV 7
-#define INF 32767
-typedef struct
+//顶点结构体，存放顶点编号的信息
+struct VetexType
 {
 	int no;
-	//info
-} VetexType;//顶点结构体，存放顶点编号的信息
+};
 
-typedef struct
+struct MatGraph
 {
-	int edges[MAXV][MAXV];//邻接矩阵
-	int n, e;			  //定点数和边数
-	VetexType vexs[MAXV]; //存放顶点
-} MatGraph;
+	// 邻接矩阵
+	std::vector<std::vector<int>> edges;
+	
+	// 定点数和边数
+	int n, e;
+	
+	// 顶点
+	std::vector <VetexType> vexs; 
+};
 
-typedef struct ANode
+// 邻接表节点
+struct ArcNode
 {
 	int adjvex;
-	struct ANode* nextarc;
+	struct ArcNode* nextarc;
 	int weight;
-} ArcNode;//边
+};
 
-typedef struct
+//邻接表头
+struct VNode;
 {
-	//info
 	ArcNode* firstarc;
-} VNode;//邻接表头
+} 
 
-typedef struct
+//邻接表
+struct AdjGraph
 {
 	VNode adjlist[MAXV];
 	int n, e;
-} AdjGraph;//邻接表
+};
 
 //创建邻接表
 void CreateAdj(AdjGraph*& G, int A[MAXV][MAXV], int n, int e)
@@ -385,7 +390,7 @@ int MaxDist(AdjGraph* G, int v)
 
 /*
 	【带权图的生成树算法】
-	普里姆（Prim）算法
+	普里姆（Prim）算法（分两个点集以及连接两个点集的边集，每次取最小边，并更新边集）
 		设带权连通图的顶点集为V，边集为E。
 		1.初始化边集TE为空，点集U={v}，v为生成树的根节点，可任意指定。将v到V-U的所有点的边作为侯选边（若没有边，则权值为INF）
 		2.从候选边中选择权值最小的边加入TE，再将边在V-U的顶点k加入U。
@@ -393,8 +398,10 @@ int MaxDist(AdjGraph* G, int v)
 			即，之前到j点的权值大于k点到j的权值，那么k加入U之后，肯定考虑从k走到j而不是其他
 		4.重复2，3步骤，直到所有顶点都加入U
 
-	普里姆算法，将点集分为两个U和V-U，每次循环找到连接两个点集的最小权值的边，把边在V-U的顶点加入U
-
+	普里姆算法，将点集V分为两个子集：U和V-U。
+	同时维护一个从U到V-U的候选边集，这个边集只需关心V-U的一段
+	每次循环从候选边集里找到最小的边e(j)，j属于V-U，至于边的另一个端点i，属于U，但是无需关心
+	把顶点j加入U，更新候选边：对每个V-U的顶点k，如果e(j, k)更小，则更新为e(j, k)
 
 */	
 
@@ -477,24 +484,63 @@ void Prim(const MatGraph& g, int v)
 
 /*
 	【带权图的生成树算法】
-	克鲁斯卡尔（Kruskal）算法
+	克鲁斯卡尔（Kruskal）算法（维护边集，每次从边集里取最小的不会形成回路的边，取n-1次。因为n个顶点的最小生成树必然有n-1条边）
 		设带权连通图的顶点集为V，边集为E。
 		1.初始化边集TE为空，点集U=V，即包含了连通图中的所有点。
 		2.从E中由小到大依次选取边，如果改变没有使U形成回路，则加入TE，否则舍弃
 		3.重复2步骤，直到TE中有n-1条边
 */
 
+void Kruskal(const MatGraph& g)
+{
+	int edges[MAXV];
+	std::vector<bool> used(g.n,0);
+	used[v] = true;
+	int min, pi, pj;
+
+	int n = 0;
+	while(n < g.e-1)
+	{
+		n++;
+		min = INF;
+
+		// 找到最小权值的边，并且该边不会形成回路
+		for(int i=0;i<g.n;++i)
+		{
+			for(int j=0;i<g.n;++i)
+			{
+				if(j!=i && !(used[i] && used[j]))
+				{
+					if(min < g.edges[i][j])
+					{
+						min = g.edges[i][j];
+						pi = i;
+						pj = j;
+					}
+				}
+			}
+		}
+
+		// 将i和j设为已连通
+		if(min!=INF)
+		{
+			used[pi] = true;
+			used[pj] = true;
+		}
+	}
+}
 
 
 /*
-	狄克斯特拉（Dijkstra）算法
+	狄克斯特拉（Dijkstra）算法（动态规划思想）
 	对于带权图，求一个顶点到其他所有顶点的最短路径
+	其原理和prim算法相似，但是更新边集的规则有些许不同
 
 	基本思想：
 		将有向带权图的顶点分为两个集合，已求出v到其最短路径的顶点的集合S，和剩余顶点U
 
-		1.初始时，S仅包含v。v到U中任一顶点i的最短路径为到i的边的权值（没有边则路径长度为INF）
-		2.从U中选取到S权值最小的边，其另一顶点为u，将u加入S
+		1.初始时，S仅包含v。v到U中任一顶点i的最短路径为e(v, i)的权值（没有边则路径长度为INF）
+		2.选取距离v最近的点u，加入S
 		3.以u为中间点，若v到u再到其余点的路径的权值和更小，则修改v到对应点最短路径的值
 		4.重复2和3
 
@@ -502,6 +548,13 @@ void Prim(const MatGraph& g, int v)
 	但是狄克斯特拉算法存放所有的最短路径只用了一个一维数组。
 	其原理是。如果v,...,a,j是v到j的最短路径，其中a为j的前一个顶点。那么v,...,a就是v到a的最短路径。
 	那么对于j，只需要在数组里保存a即可。即path[j]=a；
+
+	某个节点的加入，只更新为加入的点的最短距离，而不是更新所有点的最短距离？
+		由于每次都把距离v最近的点加入S，所以加入后，点的最短距离已经确定
+		点k加入S，只需更新K以后的点的最短距离，因为k之前的点一定比k更靠近v
+		不可能存在一个更近的点的最短距离要先去一个更远的点再去该点
+	
+	为什么把k作为未到达的点的前驱节点？
 
 
 */
@@ -646,6 +699,10 @@ void Floyd(const MatGraph& g)
 					{
 						A[i][j] = A[i][v] + A[v][j];
 						Path[i][j] = Path[v][j];
+						// 为什么是 Path[i][j] = Path[v][j]; ？ 而不是Path[i][j] = Path[i][v];
+						// 因为双循环是i外j内，即先固定i，求i到每个点的边的路径，所以i经过v去j的路径
+						// 的后半段是v到j。
+						// 如果改为Path[i][v]，内循环的j变化却不会使Path[i][v]变化
 					}
 				}
 		}
