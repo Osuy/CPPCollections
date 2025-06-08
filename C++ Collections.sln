@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "C++Object Model", "C++Objec
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MetaProgramming", "MetaProgramming\MetaProgramming.vcxproj", "{91CF7C41-16D7-443F-AEC7-A144916074BC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Memory Management jjhou", "Memory Management jjhou\Memory Management jjhou.vcxproj", "{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{91CF7C41-16D7-443F-AEC7-A144916074BC}.Release|x64.Build.0 = Release|x64
 		{91CF7C41-16D7-443F-AEC7-A144916074BC}.Release|x86.ActiveCfg = Release|Win32
 		{91CF7C41-16D7-443F-AEC7-A144916074BC}.Release|x86.Build.0 = Release|Win32
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Debug|x64.ActiveCfg = Debug|x64
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Debug|x64.Build.0 = Debug|x64
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Debug|x86.ActiveCfg = Debug|Win32
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Debug|x86.Build.0 = Debug|Win32
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Release|x64.ActiveCfg = Release|x64
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Release|x64.Build.0 = Release|x64
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Release|x86.ActiveCfg = Release|Win32
+		{27E0B8C9-6767-4FDA-ACC7-30C76CD4E73B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
