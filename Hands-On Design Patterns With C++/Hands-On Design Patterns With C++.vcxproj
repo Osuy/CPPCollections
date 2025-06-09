@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{91cf7c41-16d7-443f-aec7-a144916074bc}</ProjectGuid>
-    <RootNamespace>MetaProgramming</RootNamespace>
+    <ProjectGuid>{7353f847-df08-4eec-895e-a2738e6547c8}</ProjectGuid>
+    <RootNamespace>HandsOnDesignPatternsWithC</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -104,7 +104,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,12 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MetaProgramming.cpp" />
+    <ClCompile Include="Hands-On Design Patterns With C++.cpp" />
+    <ClCompile Include="七、SFINAE.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="00_综述.h" />
-    <ClInclude Include="01_MetaFunction &amp; MetaData.h" />
-    <ClInclude Include="CRTP.h" />
+    <ClInclude Include="七、SFINAE.h" />
+    <ClInclude Include="二、类与方法模板.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

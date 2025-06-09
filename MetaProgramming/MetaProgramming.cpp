@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include "CRTP.h"
+#include <assert.h>
 
 // 转型为子类去实现函数
 template<typename E>
@@ -69,6 +71,8 @@ const VecSum<E1, E2> operator+(const E1& u, const E2& v)
 
 int main()
 {
+    _crtp::example2::Derived obj;
+    obj.base_func();
     Vec v0 = { 1.0, 1.0, 1.0 };
     Vec v1 = { 2.0, 2.0, 2.0 };
     Vec v2 = { 3.0, 3.0, 3.0 };
