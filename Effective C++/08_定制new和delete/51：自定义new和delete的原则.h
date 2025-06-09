@@ -1,6 +1,7 @@
 #pragma once
 #include <vcruntime_exception.h>
 #include <new.h>
+#include <crtdbg.h>
 /*
 new
 	一、必须得到正确的指针，不足时请调用new-handler，没有new-handler时抛出错误
@@ -58,6 +59,13 @@ void* operator new(size_t size)throw (std::bad_alloc)
 	}
 }
 
+// ::delete 没有第二参数，因为它释放内存使用前后缀的额外信息
+void operator delete(void* memory)
+{
+	if (!memory)return;
+	free(memory);
+}
+
 class Base
 {
 public:
@@ -74,6 +82,7 @@ public:
 		return ::operator new(size);
 	}
 
+	// 类的定制delete需要有第二参数，当第二参数不等于类大小时，使用::delete去释放
 	static void operator delete(void* memory, size_t size) throw()
 	{
 		if (0 == memory)return;

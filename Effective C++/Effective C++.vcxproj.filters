@@ -48,7 +48,7 @@
     <ClInclude Include="07_template\48：TMP元编程.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="08_定制new和delete\case 49：了解new-handler.h">
+    <ClInclude Include="08_定制new和delete\49：了解new-handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="08_定制new和delete\50：自定义new和delete的理由.h">
@@ -57,7 +57,7 @@
     <ClInclude Include="08_定制new和delete\51：自定义new和delete的原则.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="08_定制new和delete\case 52：写了placement new就也要写placement delete.h">
+    <ClInclude Include="08_定制new和delete\52：写了placement new就也要写placement delete.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="09_杂项讨论\case 53：不要忽略编译器的警告.h">
