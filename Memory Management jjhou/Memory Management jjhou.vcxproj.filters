@@ -24,6 +24,12 @@
     <ClInclude Include="13.per-class allocator_2.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="16.new_handler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="17.std_allocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
