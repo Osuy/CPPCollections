@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="01.h" />
     <ClInclude Include="14.static allocator.h" />
+    <ClInclude Include="g2.9之alloc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

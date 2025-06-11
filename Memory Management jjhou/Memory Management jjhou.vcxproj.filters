@@ -21,5 +21,8 @@
     <ClInclude Include="14.static allocator.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="g2.9之alloc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
