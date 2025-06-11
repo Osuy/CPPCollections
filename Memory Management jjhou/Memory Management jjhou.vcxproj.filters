@@ -15,8 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="01.h">
+    <ClInclude Include="1~11.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="12.per-class allocator_1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="13.per-class allocator_2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="12.per-class allocator_1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="13.per-class allocator_2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
