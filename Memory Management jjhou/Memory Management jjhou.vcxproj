@@ -127,15 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="12.per-class allocator_1.h" />
-    <ClInclude Include="13.per-class allocator_2.h" />
-    <ClInclude Include="16.new_handler.h" />
-    <ClInclude Include="17.std_allocator.h" />
-    <ClInclude Include="1~11.h" />
+    <ClInclude Include="2.std_allocator.h" />
+    <ClInclude Include="1.primitives.h" />
+    <ClInclude Include="3.malloc_free.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="12.per-class allocator_1.cpp" />
-    <ClCompile Include="13.per-class allocator_2.cpp" />
+    <ClCompile Include="1.primitives.cpp" />
+    <ClCompile Include="2.std_allocator.cpp" />
+    <ClCompile Include="3.malloc_free.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

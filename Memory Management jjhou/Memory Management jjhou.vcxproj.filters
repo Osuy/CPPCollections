@@ -15,19 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="1~11.h">
+    <ClInclude Include="1.primitives.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="12.per-class allocator_1.h">
+    <ClInclude Include="2.std_allocator.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="13.per-class allocator_2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="16.new_handler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="17.std_allocator.h">
+    <ClInclude Include="3.malloc_free.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +29,13 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="12.per-class allocator_1.cpp">
+    <ClCompile Include="1.primitives.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="13.per-class allocator_2.cpp">
+    <ClCompile Include="2.std_allocator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="3.malloc_free.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

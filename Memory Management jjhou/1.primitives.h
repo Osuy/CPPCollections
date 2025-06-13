@@ -24,30 +24,15 @@
 		new(...) 表达式使用 placement new （即带额外参数的 operator new ）
 */
 
+namespace my
+{ 
 class ClassA
 {
 	int x, y, z;
 };
 
-void example1()
-{
-	void* p1 = malloc(512);
-	free(p1);
+void example1();
 
-	ClassA* p2 = new ClassA;
-	delete p2;
-
-	void* p3 = ::operator new(512);
-	::operator delete(p3);
-
-	int* p4 = std::allocator<int>().allocate(3); // 3个int大小的内存
-	std::allocator<int>().deallocate(p4, 3); // 归还指针，并且还要指定分配之时的申请大小
-/*
-	缘于allocator的释放deallocate不仅要指针，还需指定归还的size
-	于是不适合直接使用。因为可能已经不晓得或无从知道到底分配多大
-	分配多少，归还也分毫不少地归还，唯有容器能做到
-*/
-}
 
 /*
 	new 表达式会编译器翻译为如下代码：
@@ -159,31 +144,25 @@ void example4()
 /*
 	重载::operator new
 */
-
-void* operator new(size_t size)
-{
-	std::cout << "::" << __func__ << std::endl;
-	return malloc(size);
 }
+void* operator new(size_t size);
 
 // inline void* operator new(int size); // 第一参数必须是size_t
+void* operator new[](size_t size);
 
-void* operator new[](size_t size)
-{
-	std::cout << "::" << __func__ << std::endl;
-	return malloc(size);
-}
+void operator delete(void* mem);
 
-void operator delete(void* mem)
-{
-	std::cout << "::" << __func__ << std::endl;
-	return free(mem);
-}
+// 默认调用这个 delete ，如果没有，则调用上面的
+void operator delete(void* mem, size_t size);
 
-void operator delete[](void* mem)
+void operator delete[](void* mem);
+
+namespace  my
 {
-	std::cout << "::" << __func__ << std::endl;
-	return free(mem);
+void example1_1()
+{
+	ClassA* pa = new ClassA;
+	delete pa;
 }
 
 /*
@@ -383,3 +362,67 @@ void example6()
 	标准库的string内部除了字符串以外，还持有一个引用计数对象
 	因此也使用replacement new技巧，为每个string对象都申请额外的大小用以构造引用计数对象
 */
+
+/*
+	per-class allocator
+
+	重载operator new/delete 每次从预分配的池里取出内存
+	如果 池为空，则使用new分配，并串成链表
+	归还时，直接将指针以头插法插入链表
+
+	链表的实现是类的static成员维护内存池头节点
+	自身作为链表节点，有next指针成员，因此类的大小膨胀了一个指针的大小
+	当内存在池内时，它被 上一个节点的next所指，next指向下一块内存
+	池的头节点被取出时，头节点后移，返回原头节点的内存
+*/
+
+class Screen
+{
+private:
+	double var;
+	Screen* next = nullptr;
+	static Screen* freeStore;
+	enum { screenChunk = 24 };
+public:
+	void* operator new(size_t);
+	void operator delete(void*, size_t);
+};
+
+
+
+class AirPlane
+{
+private:
+	struct AirPlaneRep
+	{
+		unsigned long miles = 0;
+		char type = 0;
+	};
+
+	union
+	{
+		AirPlaneRep rep;
+		AirPlane* next;
+	};
+	enum { BLOCK_SIZE = 512 };
+	static AirPlane* head_of_freelist;
+
+public:
+	unsigned long get_miles()const { return rep.miles; }
+	char get_type()const { return rep.type; }
+
+	void set(unsigned long m, char t)
+	{
+		rep.miles = m;
+		rep.type = t;
+	}
+
+	static void* operator new(size_t);
+	static void operator delete(void*, size_t);
+};
+
+
+/*
+	new/delete/new[]/delete[]可以 = delete ，不能 = default
+*/
+}
