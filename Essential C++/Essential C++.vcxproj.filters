@@ -15,22 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="01.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="14.static allocator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="g2.9之alloc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="3.malloc_and_free.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="4.loki_allocator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="5.其他分配器.h">
+    <ClCompile Include="Essential C++.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="1.基础.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
