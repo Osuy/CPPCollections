@@ -23,5 +23,11 @@
     <ClInclude Include="8.了解各种new和delete.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="25.将“构造”和非成员函数虚化.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="27.heap和no-heap对象.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

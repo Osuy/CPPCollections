@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include "27.heap和no-heap对象.h"
 
 int main()
 {

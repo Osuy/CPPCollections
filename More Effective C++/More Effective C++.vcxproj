@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -130,6 +130,8 @@
     <ClCompile Include="More Effective C++.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="25.将“构造”和非成员函数虚化.h" />
+    <ClInclude Include="27.heap和no-heap对象.h" />
     <ClInclude Include="8.了解各种new和delete.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
