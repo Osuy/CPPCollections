@@ -4,6 +4,8 @@
 int main()
 {
 	case12::test();
-
+	B b{};
+	B b2{};
+	b2 = b;
 	return 0;
 }

@@ -110,3 +110,15 @@ namespace case12
 		cout << endl;
 	}
 }
+
+class A
+{
+public:
+	A() = default;
+	A(const A&) = delete;
+};
+
+class B : public A
+{
+public:
+};

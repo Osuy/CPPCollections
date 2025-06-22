@@ -23,5 +23,11 @@
     <ClInclude Include="8.了解各种new和delete.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="29.Reference Counting 引用计数.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="30.Proxy Class.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

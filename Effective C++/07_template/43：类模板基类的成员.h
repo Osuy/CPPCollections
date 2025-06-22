@@ -41,15 +41,15 @@ public:
 	void func2() 
 	{
 		// 此处无法使用func，虽然没有错误提示，但编译不通过
-		// 因为继承自Base<T>，虽然Base有func成员，但当Base<T>是一个特化版本时，有func成员
-		func();
+		// 因为继承自Base<T>，虽然Base有func成员，但当Base<T>是一个特化版本时，不一定有func成员，所以不能直接使用任何父类的成员
+		//func();
 
 		// 1.通过this调用，查找自己和公有继承的父类的命名空间
 		this->func();
 
 		// 2.用using指明func在父类命名空间里，再调用
 		// using 语句也可以写在类命名空间里
-		using Base<T>::func();
+		using Base::func;
 		func();
 
 		// 3.通过父类命名空间前缀调用

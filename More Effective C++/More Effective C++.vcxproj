@@ -130,6 +130,8 @@
     <ClCompile Include="More Effective C++.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="29.Reference Counting 引用计数.h" />
+    <ClInclude Include="30.Proxy Class.h" />
     <ClInclude Include="8.了解各种new和delete.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
