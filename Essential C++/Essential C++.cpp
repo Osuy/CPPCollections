@@ -1,13 +1,12 @@
-﻿// More Effective C++.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+﻿// Essential C++.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
 #include <iostream>
-#include "27.heap和no-heap对象.h"
-#include "29.Reference Counting 引用计数.h"
-
-int main()
+using namespace std;
+int my_main()
 {
-    std::cout << "Hello World!\n";
+    cout << "Hello World!\n";
+    return 0;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

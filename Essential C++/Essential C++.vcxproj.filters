@@ -15,27 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="More Effective C++.cpp">
+    <ClCompile Include="Essential C++.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="8.了解各种new和delete.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="25.将“构造”和非成员函数虚化.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="27.heap和no-heap对象.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="31.多参虚化.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="29.Reference Counting 引用计数.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="30.Proxy Class.h">
+    <ClInclude Include="1.基础.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

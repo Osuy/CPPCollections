@@ -24,6 +24,21 @@
     <ClInclude Include="3.malloc_free.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="14.static allocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="g2.9之alloc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="3.malloc_and_free.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="4.loki_allocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="5.其他分配器.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

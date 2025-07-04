@@ -127,15 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="2.std_allocator.h" />
-    <ClInclude Include="1.primitives.h" />
-    <ClInclude Include="3.malloc_free.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="1.primitives.cpp" />
-    <ClCompile Include="2.std_allocator.cpp" />
-    <ClCompile Include="3.malloc_free.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="01.h" />
+    <ClInclude Include="14.static allocator.h" />
+    <ClInclude Include="3.malloc_and_free.h" />
+    <ClInclude Include="4.loki_allocator.h" />
+    <ClInclude Include="5.其他分配器.h" />
+    <ClInclude Include="g2.9之alloc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
