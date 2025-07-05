@@ -15,7 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="01.h">
+    <ClInclude Include="1.primitives.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="2.std_allocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="3.malloc_free.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="14.static allocator.h">
@@ -33,5 +39,19 @@
     <ClInclude Include="5.其他分配器.h">
       <Filter>头文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="1.primitives.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="2.std_allocator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="3.malloc_free.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,9 +1,7 @@
-﻿// More Effective C++.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+﻿// STL Architecture.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
 #include <iostream>
-#include "27.heap和no-heap对象.h"
-#include "29.Reference Counting 引用计数.h"
 
 int main()
 {

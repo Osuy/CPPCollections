@@ -15,27 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="More Effective C++.cpp">
+    <ClCompile Include="STL Architecture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="8.了解各种new和delete.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="25.将“构造”和非成员函数虚化.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="27.heap和no-heap对象.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="31.多参虚化.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="29.Reference Counting 引用计数.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="30.Proxy Class.h">
+    <ClInclude Include="vector.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
