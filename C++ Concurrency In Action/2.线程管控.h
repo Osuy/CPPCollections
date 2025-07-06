@@ -2,6 +2,9 @@
 #include <thread>
 #include <string>
 #include <functional>
+#include <vector>
+#include <algorithm>
+#include <iostream>
 
 /*
 	2.1基本管控
@@ -230,5 +233,238 @@ void test8()
 	2.3 std::thread 本身也支持移动，所以管理 std::thread 对象并非如之前的 thread_guard 那样使用 std::thread& 的方式
 	如果一个函数创建一个std::thread并返回给调用方来负责，或者不创建std::thread对象，而是由参数传入
 	都可以算作是转移std::thread的归属权，这种情况std::thread&并不能实现
+	
 	实际上大可直接使用std::thread即可，需要转移的地方，使用std::move来匹配移动构造，实现转移
+
+	如果一个std::thread已经关联了一个线程，就不能向他赋值新线程
 */
+
+void test9()
+{
+	auto func1 = [] {};
+	auto func2 = [] {};
+
+	std::thread t1{ func1 };
+	std::thread t2 = std::move(t1); // 把t1移交给t2
+
+	t1 = std::thread{ func2 }; // t1再次关联一个新的线程
+
+	std::thread t3; // 空对象t3，不关联任何线程
+	t3 = std::move(t2); // t2移交给t3
+	t1 = std::move(t3);// t3移交给t1，但是t1已经关联了一个线程。如果接受，就会使已有的线程被遗弃，永远无法汇合和分离，所以会调用terminate终止程序
+}
+
+/*
+	thread_guard的修改
+	因为std::thread支持移动语义，所以它不必再给以引用的形式来管理
+	引用还会有超出生命周期的隐患
+*/
+
+class scoped_thread
+{
+	std::thread t;
+public:
+	explicit scoped_thread(std::thread t_) // 形参是传值，外界需传入右值，自动发生移动
+		: t{ std::move(t_) }// 直接将形参移动到成员变量t
+	{
+		if (!t.joinable())
+		{
+			throw std::logic_error{ "No thread" };
+		}
+	}
+
+	~scoped_thread()
+	{
+		t.join();
+	}
+
+	scoped_thread(const scoped_thread&) = delete;
+	scoped_thread& operator =(const scoped_thread&) = delete;
+};
+
+/*
+	C++20也有一个析构自动汇合的类，joining_thread，与scoped_thread十分相似
+*/
+
+class joining_thread
+{
+	std::thread t;
+public:
+	// 默认构造函数，不关联线程
+	joining_thread() noexcept = default;
+
+	// 变参模板构造，接受可执行对象和参数，直接构造 std::thread 
+	template<typename Callable, typename... Args>
+	explicit joining_thread(Callable&& func, Args&&...args)
+		: t{ std::forward<Callable>(func), std::forward<Args>(args)... }
+	{}
+
+	// 接受已存在的std::thread 临时对象
+	explicit joining_thread(std::thread t_) noexcept
+		: t{ std::move(t_) }
+	{}
+
+	// 移动构造
+	joining_thread(joining_thread&& other) noexcept
+		: t{ std::move(other.t) }
+	{
+	}
+
+	// 移动赋值
+	joining_thread& operator =(joining_thread&& other) noexcept 
+	{
+		// 如果自己管理的线程可以汇合，先汇合
+		if (joinable())
+			join();
+
+		t = std::move(other.t);
+		return *this;
+	}
+
+	// 移动赋值2
+	joining_thread& operator =(std::thread&& other) noexcept 
+	{
+		// 如果自己管理的线程可以汇合，先汇合
+		if (joinable())
+			join();
+
+		t = std::move(other);
+		return *this;
+	}
+
+	~joining_thread()noexcept
+	{
+		if (joinable())
+			join();
+	}
+
+	void swap(joining_thread& other)noexcept
+	{
+		t.swap(other.t);
+	}
+
+	std::thread::id get_id()const noexcept
+	{
+		return t.get_id();
+	}
+
+	bool joinable()const noexcept
+	{
+		return t.joinable();
+	}
+
+	void join()
+	{
+		t.join();
+	}
+
+	void detach()
+	{
+		t.detach();
+	}
+
+	std::thread& as_thread()noexcept
+	{
+		return t;
+	}
+
+	const std::thread& as_thread()const noexcept
+	{
+		return t;
+	}
+};
+
+/*
+	除了thread_guard/scoped_thread/joining_thread等RAII类
+	线程也可以交给容器管理，容器析构时会析构所有元素。所以需要在容器的生命周期前把所有元素join
+
+	一个大型的计算任务，并且各部分之间没有关联，可以独自计算，就可以使用多线程来并行计算
+	而其计算结果在被使用前，必须确保所有线程都已经计算完毕，因此应该对所有线程调用join汇合
+	然后才能使用计算结果
+	例如：求和。求和的每部分都是独立的，求和的结果也必须等待每个部分结束后才能得到
+*/
+
+void test10()
+{
+	auto func = [](int i) {};
+	std::vector<std::thread> threads;
+
+	for (int i = 0; i < 20; ++i)
+	{
+		threads.emplace_back(func, i);
+	}
+
+	for (auto& entry : threads)
+	{
+		entry.join();
+	}
+}
+
+/*
+	2.4决定线程的数量
+	C++标准库提供了一个函数hardware_cocurrency()，用于获取当前可以使用的线程数量
+	对于一个必须汇合得到的计算任务，使用这个数额的线程是恰当的
+	以求和为例
+
+	由于线程执行的入口函数是没有返回值的，也无法得到返回值，所以需要传入引用，并且是std::ref
+*/
+
+template<typename Iterator , typename T>
+struct accumulate_block
+{
+	void operator()(Iterator first, Iterator last, T& result)
+	{
+		result = std::accumulate(first, last, result);
+	}
+};
+
+template<typename Iterator, typename T>
+T parallel_accumulate(Iterator first, Iterator last, T init)
+{
+	unsigned long const length = std::distance(first, last);
+	if (!length)
+		return init;
+
+	//求线程数量
+	unsigned long const min_per_thread = 25;
+	unsigned long const max_threads = (length + min_per_thread - 1) / min_per_thread;
+	auto hardware_threads = std::hardware_concurrency();
+	auto num_threads = std::min(hardware_threads ? 2 : hardware_threads, max_threads);
+	
+	// 区块大小
+	auto block_size = length / num_threads;
+	
+	std::vector<T> results(num_threads);
+	std::vector<std::thread> threads(num_threads - 1);// 主线程也算一个线程
+
+	Iterator block_start = first;
+	for (unsigned long i = 0; i < (num_threads - 1); ++i)
+	{
+		Iterator block_end = block_start;
+		std::advance(block_end, block_size);
+		threads[i] = std::thread{ accumulate_block<Iterator, T>{}, block_start, block_end, std::ref(results[i]) };
+		block_start = block_end;
+	}
+
+	// 主线程负责算最后一个block（必须在汇合之前，那样才能和其他线程并行计算）
+	accumulate_block<Iterator, T>{}.(block_start, last, std::ref(results[num_threads - 1]));
+
+	// 等待所有线程汇合
+	for (auto& entry : threads)
+	{
+		entry.join();
+	}
+
+	return std::accumulate(results.begin(), results.end(), init);
+}
+
+/*
+	2.5 线程id
+	std::thread::id 类似整数，可以数学运算和hash
+	std::this_thread::get_id
+*/
+
+void test11()
+{
+	std::cout << std::this_thread::get_id();
+}
