@@ -130,6 +130,9 @@
     <ClInclude Include="MetaProgramming\01_MetaFunction &amp; MetaData.h" />
     <ClInclude Include="MetaProgramming\00_综述.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
