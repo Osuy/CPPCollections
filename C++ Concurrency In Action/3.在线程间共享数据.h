@@ -294,4 +294,106 @@ void test4(my_stack2<int>& s1, my_stack2<int>& s2)
 
 /*
 	防范死锁之4：按层级加锁
+	一种更宽松的顺序加锁。要求必须按照从高到低层次去加锁
+
+	每个锁都定义在不同的层级，在加锁前，确保current_hierarchy是严格小于该锁的层级，否则就抛出异常使加锁失败
+	而在加锁后，就要更新current_hierarchy使后继其他锁的加锁能有效判断
+
+	而在解锁时，需要把current_hierarchy复原到之前的层级。于是需要一个last_hierarchy保存加锁前的层级
+	由于锁只能被加一次，也只能被复原一次，所以last_hierarchy可以作为锁的成员变量
+
+	但是对于多个线程，每个线程都可以试图加一个锁，而必须是每个线程的current_hierarchy去和锁的层级比较
+	所以 current_hierarchy是一个线程独有变量。可以用 static thread_local 来修饰
+	static 表示变量不是成员而是静态。thread_local表示每个线程都会有一个副本
+*/
+
+class hierarchical_mutex
+{
+	std::mutex internal_mutex;
+	unsigned long const hierarchy;
+	unsigned long last_hierarchy;
+	static thread_local unsigned long current_hierarchy;
+
+	void check_for_hierarchy_violation()
+	{
+		// 加锁前调用，检查当前层级是否锁层级
+		// 如果锁层级高于当前线程层级，则加锁失败（同一层级也失败）
+		if (current_hierarchy <= hierarchy)
+		{
+			throw std::logic_error{ "mutex hierarchy  violated" };
+		}
+	}
+
+	void update_hierarchy()
+	{
+		// 加锁后调用，更新旧层级和当前层级
+		// 旧层级 = 当前线程层级，当前线程层级 = 锁层级
+		last_hierarchy = current_hierarchy;
+		current_hierarchy = hierarchy;
+	}
+
+public:
+	explicit hierarchical_mutex(unsigned long value)
+		: hierarchy{ value }
+		, last_hierarchy{ 0 }
+	{}
+
+	void lock()
+	{
+		check_for_hierarchy_violation();
+		internal_mutex.lock();
+		update_hierarchy();
+	}
+
+	void unlock()
+	{
+		if (current_hierarchy != hierarchy)
+		{
+			throw std::logic_error{ "mutex hierarchy violated" };
+		}
+
+		current_hierarchy = last_hierarchy;
+		internal_mutex.unlock();
+	}
+
+	bool try_lock()
+	{
+		check_for_hierarchy_violation();
+		if (!internal_mutex.try_lock())
+		{
+			return false;
+		}
+
+		update_hierarchy();
+		return true;
+	}
+};
+
+// 当前线程层级初始从最大值开始，可以逐步往低层级加锁
+thread_local unsigned long hierarchical_mutex::current_hierarchy(ULONG_MAX);
+
+/*
+	unique_lock
+	支持：1.自动上锁；2.已加锁的锁；3.不上锁，等待需要时调用lock
+	其内部保存着锁的状态。如果自动上锁，则状态为占有，析构时需要解锁
+	若关联已上锁的锁，同理
+	若关联未上锁的锁，且始终未调用lock，也就未占有锁，析构也不会去解锁
+*/
+
+void test5()
+{
+	std::mutex m1;
+	std::unique_lock u1{ m1 };//自动上锁
+
+	std::mutex m2;
+	m2.lock();
+	std::unique_lock u2{ m2, std::adopt_lock };// 管理已经上锁的锁
+
+	std::mutex m3;
+	std::unique_lock u2{ m2, std::defer_lock };// 管理未锁的锁，也不自动上锁。待需要时上锁
+	u2.lock();
+}
+
+/*
+	在不同作用域中转移互斥
 */
