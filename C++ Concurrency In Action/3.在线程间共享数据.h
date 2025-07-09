@@ -396,4 +396,18 @@ void test5()
 
 /*
 	在不同作用域中转移互斥
+	典型的例子是一个函数对互斥上锁，并把锁返回给调用者。这样不仅保护了函数内部，也保护了调用处
 */
+
+std::unique_lock<std::mutex> prepare()
+{
+	std::unique_lock lk{ mtx };
+	// do some prepare
+	return lk;
+}
+
+void process()
+{
+	auto lk{ prepare() };
+	// do some thing
+}
