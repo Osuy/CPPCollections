@@ -26,5 +26,8 @@
     <ClInclude Include="3.在线程间共享数据.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="4.并发同步.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
