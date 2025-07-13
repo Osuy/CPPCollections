@@ -2,6 +2,8 @@
 #include <mutex>
 #include <list>
 #include <stack>
+#include <map>
+#include <shared_mutex>
 
 /*
 	3.1共享数据的问题
@@ -496,8 +498,8 @@ void example_dclp()
 	dclp的问题的根源是：它在锁外读取了锁内要写入的数据
 
 	C++标准库提供了一个能确保仅被调用一次的方法 call_once 和 once_flag
-	once_flag是一个状态，它作为call_once的第一参数，只能被修改一次
-	如果希望多个线程中的某一段代码只被执行一次，其余代码每个线程照常执行
+	once_flag是一个状态，它作为call_once的第一参数，禁用拷贝和移动，只能被修改一次
+	如果希望多个线程中的某一段代码只在首次进入时被执行一次，其余代码每个线程照常执行
 	可以把这部分代码封装未可执行对象，并交给 call_once 去调用
 */
 
@@ -512,3 +514,100 @@ void do_some_thing_by_G_a()
 	std::call_once(G_a_flag, prepare_G_a);
 	G_a; // 调用A的函数
 }
+
+/*
+	call_once 例子
+	用于接收或发送数据的对象
+	每次接受和发生前，都必须确认链接已经建立
+	接受或发送多少次，就要确认多少次。然而，只有第一次接收或发生时确认是必要的
+	其余都是多余的。因此“建立连接”是一个首次唯一行为
+	可以把“建立连接”封装为一个函数，利用call_once进行首次唯一调用
+*/
+struct data_packet {};
+struct connection_info {};
+struct connection_handle { void receive() {}; void send(const data_packet&) {} };
+struct connection_manager_t { connection_handle open(connection_info) { return connection_handle{}; } };
+connection_manager_t connection_manager{};
+
+class X
+{
+private:
+	connection_info connection_details;
+	connection_handle connection;
+	std::once_flag connection_init_flag;
+	void open_connection()
+	{
+		connection = connection_manager.open(connection_details);
+	}
+public:
+	X(connection_info const& connection_details_)
+		: connection_details{connection_details_}
+	{ }
+
+	void send(data_packet const& data)
+	{
+		std::call_once(connection_init_flag, &X::open_connection, this);// 首次唯一调用
+		connection.send(data);
+	}
+
+	void receive()
+	{
+		std::call_once(connection_init_flag, &X::open_connection, this);// 首次唯一调用
+		connection.receive();
+	}
+};
+
+/*
+	如果这个首次唯一行为是创建一个全局唯一实例，可以用静态局部变量来简化实现
+	C++保证静态局部变量只在首次进入时初始化，且线程安全
+	当然全局唯一需要类自己保证（构造设为私有，拷贝、赋值设为弃置）
+	
+*/
+
+X& get_some()
+{
+	static X instance{ {} };
+	return instance;
+}
+
+/*
+	允许多个同时读取，但仅允许一个写入是更常见的用途
+	读取只排斥写入，而写入排斥所有。
+	共享数据允许多个线程同时读取，并不排斥
+	而写入则加锁，阻塞读写和其他写入。
+	唯有当写入解锁，才能被读取或再次写入；所有读取解锁，才能被写入
+
+	为了解决排它需要，C++14以后提供了 shared_mutex 。 它支持以共享的方式多次加锁，也支持排它的方式独占加锁
+	配合raii类shared_lock使用。在读取函数使用 shared_lock加共享锁；在写入函数里使用 unique_lock 或 lock_guard 加排它锁
+
+	下例以DNS缓存为例。DNS缓存是一种低频更新，高频访问的共享数据
+	简单地使用mutex，会使读取线程经常阻塞
+	恰好适合使用shared_mutex
+*/
+
+class dns_entry {};
+class dns_cache
+{
+	std::map<std::string, dns_entry> entries;
+	mutable std::shared_mutex entry_mutex;
+public:
+	dns_entry find(const std::string& domain)const
+	{
+		std::shared_lock<std::shared_mutex> lk{ entry_mutex }; // 共享锁
+		const auto it = entries.find(domain);
+		return (entries.end() == it) ? dns_entry{} : it->second;
+	}
+
+	void update_or_add_entry(const std::string& domain, const dns_entry& dns_detail)
+	{
+		std::lock_guard<std::shared_mutex> lk{ entry_mutex }; // 排它锁
+		entries[domain] = dns_detail; // 直接使用[]插入或更新
+	}
+};
+
+/*
+	递归锁
+	在一个线程里，可以对一个互斥多次加锁，并且只有解锁相同次数后，其他线程才能获取锁
+	std::recursive_mutex
+*/
+
