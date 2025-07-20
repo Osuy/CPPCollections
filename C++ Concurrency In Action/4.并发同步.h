@@ -1,6 +1,8 @@
 #pragma once
 #include <mutex>
 #include <queue>
+#include <future>
+#include <set>
 
 /*
 	一个线程等待另一个线程计算出结果后才继续
@@ -210,13 +212,190 @@ public:
 
 	除了多个线程，如果是单个线程等待同步，则notify_one可以胜任
 	但是对于单个线程的首次唯一，既不适合使用notify_one，也不适合call_once
-	std::future更适合此场景
+	单线程一次性同步事件 std::future更适合此场景
+
+	std::future 与一个事件关联，无法重置，唯有该事件完成，它才可读得结果
+	它克服了线程没有返回值的缺点
+	不过，std::future的模板参数可以是void，即便不用返回值，一次性同步也是future更合适
+	
+	一个线程若与另一个线程需要同步，并且该同步是一个一次性事件。可以让线程2的事件关联到线程1的一个future
+	然后线程1访问future中的结果。如果如果事件尚未完成产生结果，则会阻塞
+	如果并不是立刻需要结果，可以持有future去做其他事，知道需要时再访问
+	std::future 自身用于线程同步，但它本身如果被多线程访问，依然需要互斥保护
+	这种情况可以用另一种形式替代。一个事件可以与多个std::shared_future关联。
+	于是多个线程都可以读得事件的结果而不会造成竞争
+
+	可以使用std::async来构造future对象，它和thread相似，不过允许可执行对象有返回值
 */
+
+int find_the_answer_to_ltuae();
+
+void example2()
+{
+	std::future<int> answer = std::async(find_the_answer_to_ltuae);
+	// do other thing
+	answer.get(); // 如果未计算完成，会阻塞
+}
+
+/*
+	async 和thread相似，接受可执行对象
+	可以是函数指针，成员函数，仿函数，lambda表达式等等
+	对于其他参数，也同样存在拷贝和移动两种处理，而不支持引用，需用std::ref替代
+*/
+
+struct A1
+{
+	void foo(int, std::string const&);
+	std::string bar(std::string const&);
+};
+
+struct A2
+{
+	double operator()(double);
+};
+
+struct A3
+{
+	A3() = default;
+	A3(A3&&) = default;
+	A3(const A3&) = delete;
+	A3& operator=(const A3&) = delete;
+	A3& operator=(A3&&) = delete;
+
+	double operator()();
+};
+
+void example3()
+{
+	A1 a1;
+	auto f1 = std::async(A1::foo, &a1, 42, "hello"); // 传入对象地址，以p->foo形式调用
+	auto f2 = std::async(A1::bar, a1, "goodbye");// 对象值传递，以对象的拷贝tmp.bar形式调用
+
+	A2 a2;
+	auto f3 = std::async(A2(), 3.141); // 传入临时对象，发生移动，以对象的移动拷贝 tmp()形式调用
+	auto f4 = std::async(std::ref(a2), 3.141); // 传入a2的ref，以 a2()形式调用
+
+	auto f4 = std::async(A3{}); // 传入临时对象，发生移动，以对象的移动拷贝 tmp()形式调用
+}
+
+/*
+	除了async，promise和package_task也可以获取 future
+	package_task 和 function类似，也是一个可执行对象。区别在于：
+		function调用时立刻获得返回值，和函数一样
+		package_task 调用后，返回值保存于future中。future可以用get_future获取。
+		package_task 的常规用法是创建后，获取并保存它的future，然后再把它移动给另一个线程去运行
+		本线程在需要时获取future里的值
+
+	许多软件的ui框架都会运行在专门的线程上，别的线程若要更新ui，需向ui线程发送消息
+	package_task可以实现此类框架，并且避免为每个消息定义专有的类型
+	所有消息都由枚举类定义。向ui线程发生枚举值以及其他参数，通知ui更新。但是新的操作
+	就需要增加新的枚举值，可扩展性不强，还会使其他文件依赖枚举，是模块耦合
+	而使用package_task，将更新操作作为一个任务传递给ui线程去完成
+*/
+
+std::deque<std::packaged_task<void()>> tasks;
+bool gui_shutdown_message_received();
+void get_and_process_gui_message();
+void gui_thread()
+{
+	while (!gui_shutdown_message_received())
+	{
+		get_and_process_gui_message();
+		std::packaged_task<void()> task;
+		{
+			std::lock_guard lk{ mtx };
+			if (tasks.empty())continue;
+			task = std::move(tasks.front());
+			tasks.pop_front();
+		}
+		task();
+	}
+}
+
+template<typename Func>
+std::future<void> post_task_for_gui_thread(Func f)
+{
+	std::packaged_task<void()>task{ f };
+	std::future<void> res = task.get_future();
+	std::lock_guard lk{ mtx };
+	tasks.push_back(std::move(task));
+	return res;
+}
+
+/*
+	这样的框架已经和线程池相近，一个线程不断地从任务队列里取出任务并运行
+	一个函数负责向任务队列里push任务。并且返回future
+	使用“package_task和future”比起使用“function且没有返回值”更为优秀
+	因为对于使用者而言，哪怕现在不需要返回值，将来是否会需要返回值也是一个问题
+	所以干脆保留返回值的余地。并且future<void>支持无返回值，不需要直接丢弃即可
+
+	再和前文的线程池比较。ui框架的任务是不停地由ui线程执行。因为这些任务都是为了更新ui
+	而只有ui线程能更新ui
+	线程池则是提前创建了若干线程，一旦任务中有队列了，就取出并唤醒一个线程
+	任务是交给其他线程去执行的
+
+	package_task 使一个future 关联了可执行对象的返回值
+	而 promise 则使一个future 关联变量本身
+	promise<T> 代表一个T类型的变量，可以用 get_future 获取future
+	当 promise调用了set_value后，该future就准备就绪
+*/
+
+struct payload_type {};
+struct data_packet { int id; payload_type payload; };
+struct outgoing_packet { payload_type payload; std::promise<bool> promise; };
+struct connection_t
+{
+	bool has_incoming_data()const;
+	data_packet incoming()const;
+	bool has_outgoing_data()const;
+	outgoing_packet top_of_outgoing_queue()const;
+	std::promise<payload_type>& get_promise(int)const;
+
+	void send(payload_type)const;
+};
+
+using connection_set = std::set<connection_t>;
+using connection_iterator = connection_set::iterator;
+bool done(connection_set&);
+void process_connections(connection_set& connections)
+{
+	while (!done(connections))
+	{
+		/*
+			遍历每个链接
+			如果该链接有接收数据，则将该数据赋给其id对应的promise
+			promise被链接管理，每个id与promise对应，promise的future可能在其他线程正等待使用
+			一旦数据接受到，就设置promise，时其future被读取成功，所在线程继续执行
+
+			如果该链接有数据发生，则将该数据发生，并将数据对应的promise设true
+			此过程可能由其他线程发起。线程X需要发送数据，并在“发送成功”后继续执行
+			因此它将数据交给链接管理线程，并得到一个future，当数据真正被发送时，future得到true
+			于是线程X继续执行
+		*/
+		for (connection_iterator connection = connections.begin(); connection != connections.end(); ++connection)
+		{
+			if (connection->has_incoming_data())
+			{
+				data_packet data = connection->incoming();
+				std::promise<payload_type>& p = connection->get_promise(data.id);
+				p.set_value(data.payload);
+			}
+
+			if (connection->has_outgoing_data())
+			{
+				outgoing_packet data = connection->top_of_outgoing_queue();
+				connection->send(data.payload);
+				data.promise.set_value(true);
+			}
+		}
+	}
+}
 
 /*
 	四种工具的比较
 	多等待多唤醒：notify_all
 	多等待单唤醒：notify_one
-	单等待单唤醒：future
 	多线程首次唯一事件：call_once
+	一次性：future
+	多等待一次性：shared_future
 */
