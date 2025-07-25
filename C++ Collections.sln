@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Essential C++", "Essential 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "C++ Concurrency In Action", "C++ Concurrency In Action\C++ Concurrency In Action.vcxproj", "{29EAF311-321F-4117-BA90-8DFFF0018F1E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "algorithm", "..\algorithm\algorithm.vcxproj", "{019E9791-47DD-4A0D-A69B-AA10CD24604F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -111,6 +113,14 @@ Global
 		{29EAF311-321F-4117-BA90-8DFFF0018F1E}.Release|x64.Build.0 = Release|x64
 		{29EAF311-321F-4117-BA90-8DFFF0018F1E}.Release|x86.ActiveCfg = Release|Win32
 		{29EAF311-321F-4117-BA90-8DFFF0018F1E}.Release|x86.Build.0 = Release|Win32
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Debug|x64.ActiveCfg = Debug|x64
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Debug|x64.Build.0 = Debug|x64
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Debug|x86.ActiveCfg = Debug|Win32
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Debug|x86.Build.0 = Debug|Win32
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Release|x64.ActiveCfg = Release|x64
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Release|x64.Build.0 = Release|x64
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Release|x86.ActiveCfg = Release|Win32
+		{019E9791-47DD-4A0D-A69B-AA10CD24604F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

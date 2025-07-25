@@ -1,21 +1,53 @@
-﻿// C++ Concurrency In Action.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-
-#include <iostream>
-#include "2.线程管控.h"
+﻿#include "案例2.自动柜员机.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	// 案例2驱动代码
+	{
+		bank_machine bank;
+		std::thread bank_thread{ &bank_machine::run, &bank };
+
+		interface_machine interface_hardware;
+		std::thread if_thread{ &interface_machine::run, &interface_hardware };
+		
+		atm machine{ bank.get_sender(), interface_hardware.get_sender() };
+		std::thread atm_thread{ &atm::run, &machine };
+
+		messaging::sender atmqueue;
+		bool quit_pressed = false;
+		while (!quit_pressed)
+		{
+			char c = getchar();
+			switch (c)
+			{
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				atmqueue.send(digit_pressed{ c }); break;
+			case 'b':
+				atmqueue.send(balance_pressed{}); break;
+			case 'w':
+				atmqueue.send(withdraw_pressed{ 50 }); break;
+			case 'c':
+				atmqueue.send(cancel_pressed{}); break;
+			case 'q':
+				quit_pressed = true; break;
+			case 'i':
+				atmqueue.send(card_inserted{ "acc1234" }); break;
+			}
+		}
+		bank.done();
+		machine.done();
+		interface_hardware.done();
+		atm_thread.join();
+		if_thread.join();
+		bank_thread.join();
+	}
 }
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件

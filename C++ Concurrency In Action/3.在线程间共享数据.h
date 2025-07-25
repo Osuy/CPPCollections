@@ -2,6 +2,8 @@
 #include <mutex>
 #include <list>
 #include <stack>
+#include <map>
+#include <shared_mutex>
 
 /*
 	3.1共享数据的问题
@@ -305,6 +307,8 @@ void test4(my_stack2<int>& s1, my_stack2<int>& s2)
 	但是对于多个线程，每个线程都可以试图加一个锁，而必须是每个线程的current_hierarchy去和锁的层级比较
 	所以 current_hierarchy是一个线程独有变量。可以用 static thread_local 来修饰
 	static 表示变量不是成员而是静态。thread_local表示每个线程都会有一个副本
+
+	线程静态变量是层级加锁的主要手段
 */
 
 class hierarchical_mutex
@@ -411,3 +415,199 @@ void process()
 	auto lk{ prepare() };
 	// do some thing
 }
+
+/*
+	选择合适粒度加锁
+	粒度越大，越容易阻塞；
+	在保护必要数据的同时，尽可能做到粒度小
+	在同一个函数里，使用互斥保护数据时，保护范围是整个作用域
+	但是并非整个作用域都在访问数据
+	尽可能只在访问数据时上锁
+*/
+
+void test6()
+{
+	std::unique_lock<std::mutex> lk{ mtx };
+	// do 访问数据
+	lk.unlock(); // 不访问时解锁，让其他线程能够进入
+	// do other thing
+	lk.lock(); // 再次访问数据，上锁
+}
+
+/*
+	上锁期间内不要进行耗时操作。例如io。因为io几乎总是比cpu慢上万被
+	访问io其实约等于阻塞，不需要上锁
+*/
+
+/*
+	3.3保护共享数据的其他手段
+
+	保护共享初始化
+	假如有一个对象，它会被多个线程访问。初始未空，第一个线程访问时，将其初始化
+	如此就涉及到一个问题，如果有两个线程同时访问，就会发生两次初始化。并且总是丢弃第一个初始化的对象
+	C++11以前的单例懒汉模式（饿汉模式会在程序开始时立刻初始化，线程访问时已经能直接使用）
+	有一种粗糙的解决办法，双重检验锁定 double check locking pattern/ dclp
+*/
+
+/*
+	如果不考虑多线程安全：
+		只存在一个if
+		一个线程进入if内，并初始化G_a；但是在G_a被赋值之前，可能另一个线程也判断了if，然后进入
+		于是第二次初始化G_a，于是第一个初始化的对象就发生泄露
+
+	初步考虑线程安全：
+		由于一个线程在初始化G_a期间，应该禁止其他线程访问G_a，所以应该在if的前面加锁，阻止它们用正在初始化的G_a来if判断
+		但是这个位置的锁会锁住if的上一层作用域，粒度非常大。它并不是锁住了“G_a的初始化”，而是锁住了“G_a的初始化所在的作用域”
+		假如A只有初始化需要考虑线程安全，而在使用时不需要考虑
+		也就是说，这个if前的锁，使所有对G_a的访问，都不得不加上一个毫无意义的锁
+		（另一种解释：把锁放入if内，只锁住new语句。但是问题的矛盾在于会有多个线程进入if。
+		即便锁住了new。另一个进入if的线程会在得到锁之后再次new。于是又需要在new之前用if判断是否已经初始化）
+		（二者的解释都会引向一个结果：dclp）
+	
+	dclp
+		为了解决锁粒度过大的问题，可以把锁和if放入到一个作用域里，防止干涉外界的“非初始化”操作
+		那么这个新的作用域是？
+		当然是“第一次初始化的作用域”啦
+		于是进入这个作用域的条件是 if (!G_a)
+		也就是说 if (!G_a)进行了两次。第一次是判断是否需要初始化；第二次是判断是否已经被初始化
+		（可是为了防止其他线程在创建时访问，才在if前加锁，现在又在锁前再加了if。）
+
+*/
+
+class A {};
+A* G_a = nullptr;
+void example_dclp()
+{
+	if (!G_a)
+	{
+		std::unique_lock lk{ mtx };
+		if (!G_a)
+		{
+			// 如果已经被其他线程初始化了，则不进入
+			G_a = new A{};
+		}
+	}
+
+	G_a; // 调用A的函数
+}
+/*
+	dclp的缺点
+	假如两个线程是为了调用共享对象的某个函数
+	那么dclp会让第二个线程的调用建立在“第一次调用的结果”之上
+	那不一定是正确的。
+	dclp的问题的根源是：它在锁外读取了锁内要写入的数据
+
+	C++标准库提供了一个能确保仅被调用一次的方法 call_once 和 once_flag
+	once_flag是一个状态，它作为call_once的第一参数，禁用拷贝和移动，只能被修改一次
+	如果希望多个线程中的某一段代码只在首次进入时被执行一次，其余代码每个线程照常执行
+	可以把这部分代码封装未可执行对象，并交给 call_once 去调用
+*/
+
+std::once_flag G_a_flag;
+void prepare_G_a()
+{
+	G_a = new A{};
+}
+
+void do_some_thing_by_G_a()
+{
+	std::call_once(G_a_flag, prepare_G_a);
+	G_a; // 调用A的函数
+}
+
+/*
+	call_once 例子
+	用于接收或发送数据的对象
+	每次接受和发生前，都必须确认链接已经建立
+	接受或发送多少次，就要确认多少次。然而，只有第一次接收或发生时确认是必要的
+	其余都是多余的。因此“建立连接”是一个首次唯一行为
+	可以把“建立连接”封装为一个函数，利用call_once进行首次唯一调用
+*/
+struct data_packet {};
+struct connection_info {};
+struct connection_handle { void receive() {}; void send(const data_packet&) {} };
+struct connection_manager_t { connection_handle open(connection_info) { return connection_handle{}; } };
+connection_manager_t connection_manager{};
+
+class X
+{
+private:
+	connection_info connection_details;
+	connection_handle connection;
+	std::once_flag connection_init_flag;
+	void open_connection()
+	{
+		connection = connection_manager.open(connection_details);
+	}
+public:
+	X(connection_info const& connection_details_)
+		: connection_details{connection_details_}
+	{ }
+
+	void send(data_packet const& data)
+	{
+		std::call_once(connection_init_flag, &X::open_connection, this);// 首次唯一调用
+		connection.send(data);
+	}
+
+	void receive()
+	{
+		std::call_once(connection_init_flag, &X::open_connection, this);// 首次唯一调用
+		connection.receive();
+	}
+};
+
+/*
+	如果这个首次唯一行为是创建一个全局唯一实例，可以用静态局部变量来简化实现
+	C++保证静态局部变量只在首次进入时初始化，且线程安全
+	当然全局唯一需要类自己保证（构造设为私有，拷贝、赋值设为弃置）
+	
+*/
+
+X& get_some()
+{
+	static X instance{ {} };
+	return instance;
+}
+
+/*
+	允许多个同时读取，但仅允许一个写入是更常见的用途
+	读取只排斥写入，而写入排斥所有。
+	共享数据允许多个线程同时读取，并不排斥
+	而写入则加锁，阻塞读写和其他写入。
+	唯有当写入解锁，才能被读取或再次写入；所有读取解锁，才能被写入
+
+	为了解决排它需要，C++14以后提供了 shared_mutex 。 它支持以共享的方式多次加锁，也支持排它的方式独占加锁
+	配合raii类shared_lock使用。在读取函数使用 shared_lock加共享锁；在写入函数里使用 unique_lock 或 lock_guard 加排它锁
+
+	下例以DNS缓存为例。DNS缓存是一种低频更新，高频访问的共享数据
+	简单地使用mutex，会使读取线程经常阻塞
+	恰好适合使用shared_mutex
+*/
+
+class dns_entry {};
+class dns_cache
+{
+	std::map<std::string, dns_entry> entries;
+	mutable std::shared_mutex entry_mutex;
+public:
+	dns_entry find(const std::string& domain)const
+	{
+		std::shared_lock<std::shared_mutex> lk{ entry_mutex }; // 共享锁
+		const auto it = entries.find(domain);
+		return (entries.end() == it) ? dns_entry{} : it->second;
+	}
+
+	void update_or_add_entry(const std::string& domain, const dns_entry& dns_detail)
+	{
+		std::lock_guard<std::shared_mutex> lk{ entry_mutex }; // 排它锁
+		entries[domain] = dns_detail; // 直接使用[]插入或更新
+	}
+};
+
+/*
+	递归锁
+	在一个线程里，可以对一个互斥多次加锁，并且只有解锁相同次数后，其他线程才能获取锁
+	std::recursive_mutex
+*/
+

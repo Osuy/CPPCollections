@@ -130,6 +130,8 @@
     <ClInclude Include="2.线程管控.h" />
     <ClInclude Include="3.在线程间共享数据.h" />
     <ClInclude Include="4.并发同步.h" />
+    <ClInclude Include="案例1.消息队列.h" />
+    <ClInclude Include="案例2.自动柜员机.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
