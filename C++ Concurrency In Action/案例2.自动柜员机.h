@@ -257,7 +257,7 @@ class atm
 	void getting_pin()
 	{
 		incoming.wait()
-			.handle<balance>(
+			.handle<digit_pressed>(
 				[&](const digit_pressed& msg)
 				{
 					const unsigned pin_length = 4;
@@ -532,3 +532,93 @@ public:
 		}
 	}
 };
+
+// 驱动代码
+void luanch()
+{
+	// 创建银行状态机，在单独线程上运行
+	bank_machine bank;
+	std::thread bank_thread{ &bank_machine::run, &bank };
+
+	// 创建用户节目状态机，在单独线程上运行
+	interface_machine interface_hardware;
+	std::thread if_thread{ &interface_machine::run, &interface_hardware };
+
+	// 创建atm状态机，并且以银行和用户节点的sender为成员，说明atm会不断发生消息给银行和用户节目
+	// 用户和用户界面交互，用户界面和银行与atm交互，所以atm是交互的核心
+	atm machine{ bank.get_sender(), interface_hardware.get_sender() };
+	std::thread atm_thread{ &atm::run, &machine };
+
+	// 单独取出atm的sender来发送消息
+	messaging::sender atmqueue{ machine.get_sender() };
+	bool quit_pressed = false;
+	while (!quit_pressed)
+	{
+		char c = getchar();
+		switch (c)
+		{
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			atmqueue.send(digit_pressed{ c }); break; // 输入数字
+		case 'b':
+			atmqueue.send(balance_pressed{}); break;// 查询余额
+		case 'w':
+			atmqueue.send(withdraw_pressed{ 50 }); break;// 取款
+		case 'c':
+			atmqueue.send(cancel_pressed{}); break; // 取消
+		case 'q':
+			quit_pressed = true; break; // 退出主循环
+		case 'i':
+			atmqueue.send(card_inserted{ "acc1234" }); break; // 如果输入了i，则视为插入了账户acc1234的银行卡
+		}
+	}
+
+	// 主循环结束，所有状态机终止（发送close_queue消息）
+	bank.done();
+	machine.done();
+	interface_hardware.done();
+
+	// 所有线程汇合
+	atm_thread.join();
+	if_thread.join();
+	bank_thread.join();
+}
+
+/*
+	运行解释
+	三个状态机：银行、用户界面和atm独立在三个线程上运行run函数
+	前二者的run只是建立消息分发链并立刻阻塞，因为此时状态机的队列没有任何消息
+	atm的run会默认在wait_for_card上执行：
+		1.向ui发送display_enter_card消息（向ui状态机的队列里push，并唤醒ui线程）
+		2.建立消息分发链，处理 card_inserted 消息
+
+	ui线程被唤醒后，立刻取出display_enter_card消息并处理（打印请插入卡）
+
+	这样三个线程启动完成
+	main线程负责主循环，不停接收io的输入并向atm发消息
+	由于此时atm处于 等待插卡 状态， 只接收card_inserted消息，其他消息不做事
+	所以主循环无论输入什么都没反应，除了输入i，也就是插卡
+	atm处理插卡，获取到账户名，发送display_enter_pin消息给ui，切换到getting_pin状态
+	ui线程打印请输入pin
+
+	getting_pin状态处理三种消息：
+		1.取消，切换到done_processing状态
+		2.退格，删除上个数字
+		3.输入数字，将数字累加到成员字符串pin中，如果长度达到了4位，则发送 verify_pin{账户名，pin，atm的receiver } 消息到bank，并切换状态到verifying_pin
+	getting_pin状态并不一定会切换状态，因为未输入完、删除三个数字，都允许用户继续数组，所以保持在 getting_pin状态
+	而取消和输入长度达标才会切换状态
+
+	done_processing状态会发送eject_card消息到ui，然后切换到wait_for_card状态
+	verifying_pin状态则是处理pin验证成功或失败的消息，如果失败，或者bank回应前用户取消验证，进入done_processing状态
+	如果bank验证成功返回消息，则进入wait_for_action状态，等待用户对账户的其他操作
+
+
+*/
