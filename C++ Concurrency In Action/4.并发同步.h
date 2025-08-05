@@ -6,6 +6,7 @@
 #include <list>
 #include <type_traits>
 #include <__msvc_filebuf.hpp>
+#include <ppltasks.h>
 
 /*
 	一个线程等待另一个线程计算出结果后才继续
@@ -517,18 +518,80 @@ std::future<std::invoke_result_t<F(A&&)>> spawn_task(F&& f, A&& a)
 
 	案例代码见： 案例2.自动柜员机.h
 
-	C.后续风格
-	C++并发技术规约位于experimental命名空间
-	此前，为了获知某任务线程的结果，也就是future，要么wait/get立即阻塞，要么wait_for/wait_until阻塞一段时间
-	能否实现一种处理，在future就绪时，立刻执行某一个函数。而本线程并不等待future，顾自继续允许
+	C++20并发新特性
+		when_all：等待所有future就绪
+		when_any：等待任一future就绪
+		latch线程闩：线程同步计数器
+		barrier线程卡：使线程在某位置阻塞，直至其他同样会被阻塞的程序到齐
 
-	因为大多情况并非有很多任务都在等待某结果（星形），而是任务A等待结果B，任务B等待结果C，任务C等待结果D（链式）
-	只有一段代码要等待某个结果，那就让这段代码剥离为一个函数，在future就绪时执行，而这段代码的结果，也返回一个future
-	作为之前future的替代
-	于是，本线程被阻塞的机会就会更少
+
+	如果自行实现等待所有future就绪，代码可能如下
+*/
+struct MyData{};
+struct ChunkResult {};
+struct FinalResult {};
+template<typename Iterator>
+ChunkResult process_chunk(Iterator first, Iterator last) {}// 处理单个chunk
+
+FinalResult gather_results(std::vector<ChunkResult>& vec) { return FinalResult{}; }// 合并所有chunk的结果
+
+std::future<FinalResult> process_data(std::vector<MyData>& vec)
+{
+	// 将完整的数据切分给 多个线程处理，每个线程的future存入数组
+	size_t chunk_size = 20;
+	std::vector<std::future<ChunkResult>> results;
+	for (auto begin = vec.begin(), end = vec.end(); begin != end;)
+	{
+		const size_t remaining_size = end - begin;
+		const auto this_chunk_size = std::min(remaining_size, chunk_size);
+		results.push_back(std::async(process_chunk<decltype(begin)>, begin, begin + this_chunk_size));
+		begin += this_chunk_size;
+	}
+
+	// 启用一个新的线程去等待所有future就绪，并在那之后合并
+	return std::async([all_results = std::move(results)]()
+		{
+			std::vector<ChunkResult>v;
+			v.reserve(all_results.size());
+			for (auto& f : all_results)
+			{
+				v.push_back(f.get());
+			}
+
+			return gather_results(v);
+		});
+}
+
+/*
+	其中，在等待所有future时，可能会存在多次阻塞。试问
+		假如我必须等待所有future才能继续，那何必为单个future而阻塞呢？
+	when_all便是用来解决这个问题的
 */
 
-std::experimental::future<int> find_the_answer();
-void example3()
+std::future<FinalResult> process_data2(std::vector<MyData>& vec)
 {
+	// 将完整的数据切分给 多个线程处理，每个线程的future存入数组
+	size_t chunk_size = 20;
+	std::vector<std::future<ChunkResult>> results;
+	for (auto begin = vec.begin(), end = vec.end(); begin != end;)
+	{
+		const size_t remaining_size = end - begin;
+		const auto this_chunk_size = std::min(remaining_size, chunk_size);
+		results.push_back(std::async(process_chunk<decltype(begin)>, begin, begin + this_chunk_size));
+		begin += this_chunk_size;
+	}
+
+	auto all_futures = Concurrency::when_all(results.begin(), results.end());
+	// 启用一个新的线程去等待所有future就绪，并在那之后合并
+	return std::async([all_results = std::move(results)]()
+		{
+			std::vector<ChunkResult>v;
+			v.reserve(all_results.size());
+			for (auto& f : all_results)
+			{
+				v.push_back(const_cast<std::future<ChunkResult>&>(f).get());
+			}
+
+			return gather_results(v);
+		});
 }

@@ -5,6 +5,8 @@
 #include <vector>
 #include "CRTP.h"
 #include <assert.h>
+#include "01_MetaFunction & MetaData.h"
+#include "type_traits.h"
 
 // 转型为子类去实现函数
 template<typename E>
@@ -77,6 +79,23 @@ int main()
     Vec v1 = { 2.0, 2.0, 2.0 };
     Vec v2 = { 3.0, 3.0, 3.0 };
 
+    rank<int[]>::value;
+    extent<int[], 2>::value;
+
+    test();
+
+    /*
+        v1 + v2 产生一个匿名对象VecSum<Vec, Vec>，
+        v0 + 匿名对象，产生一个匿名对象VecSum<Vec, VecSum<Vec, Vec>>
+        VecSum<...>对象只是建立了两个和数的引用关系，而和数自身也可以是一个VecSum
+        Vec支持泛化的构造函数，可以传入一个VecExpression，VecSum<...>继承自VecExpression<VecSum<...>>，所以可以转型
+        构造函数内遍历VecExpression，挨个[]取出元素并赋值给自己
+        对VecSum<...>使用[]取元素，才会进行真正的运算，调用两个和数的[]取出元素并相加
+        这个过程会一直递归达到树的叶子节点，然后向上返回，一直相加，直到根节点
+
+        也就是说，=才进行了真正的运算
+        如果只是 v0 + v1 + v2; 则不存在运算，只是产生了持有引用关系的匿名对象
+    */
     Vec v3 = v0 + v1 + v2;
 
     std::cout << "Hello World!\n";

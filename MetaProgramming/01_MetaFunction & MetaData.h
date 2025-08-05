@@ -140,14 +140,20 @@ using is_integral = is_one_of<T, bool, char, short, int, long, long long>; // 判
 /*
 	is_instantiation_of
 	判断一个类型是否时一个类模板的具象化
-	显然需要两个形参：类型、类模板类型。
-	注意，当类模板作为类型形参时，typename写在在template之后
+	显然需要两个形参：1.特化类型；2.类模板类型。
+	注意，当类模板作为类型形参时，需要有template前置声明
 
-	默认以主模板为不匹配，所以继承false_type，Inst<...>和Tmpl不匹配，即类名不匹配。（模板参数不对的化，编译就直接出错，所以只有类名不匹配）
-	特化版本为匹配，所以继承true_type，由于不知道具体有几个形参，所以用可变长参数ARGS...，所以匹配的结果应该是： Inst<ARGS...> == Tmpl<ARGS...>
-	所以第一个参数为Tmpl<ARGS...>，第二个参数为Tmpl
+	主模板负责不匹配，继承false_type
+	第一参数和第二参数，各自以最泛化的形式接受任何模板参数，也不需要有参数名
+
+	特化版本负责匹配，继承true_type
+	模板参数不再与主模板格式相同，即不再有第一参数和第二参数，而是用类模板Impl和可变模板参数Args
+	并以新的形式偏特化出主模板的第一第二参数：
+		第一参数：以类模板<可变模板参数>偏特化，即 Impl<Args>
+		第二参数：类模板即 Impl
+	由于 Impl<Args> 是 Impl的具象化，所以匹配到此偏特化版的模板参数都符合“一个类型是一个类模板的具象化”
 */
-template<typename Inst, template<typename ...>typename Impl>
+template<typename, template<typename ...>typename>
 struct is_instantiation_of :public false_type {};
 
 template<template<typename ...> typename Tmpl, typename ...ARGS>
@@ -173,12 +179,43 @@ template<typename T,typename F>			 struct conditional<false, T, F> : public type
 	可以有效减少编译的时间
 */
 
-// 返回数组的维度
+/*
+	返回数组的维度
+	主模板匹配任意类型，维度为0
+	偏特化版本匹配数组T[]，推导出T，继续传参给模板，继续推导T
+	如果T还是数组，则继续匹配偏特化。直到T不再为数组，匹配到了主模板。此时匹配到主模板的上一层递归是一维数组
+	所以其维度是主模板的值0 + 递归层数差1 = 1
+	递归向上返回，不断+1，最终推导出实参的维度
+*/
 template<typename T>				 struct rank	   :public integral_constant<unsigned int, 0> {};
 template<typename T>				 struct rank<T[]>  :public integral_constant<unsigned int, rank<T>::value + 1> {};
-template<typename T, unsigned int N> struct rank<T[N]> :public integral_constant<unsigned int, rank<T>::value + 1> {};
+template<typename T, unsigned N>	 struct rank<T[N]> :public integral_constant<unsigned int, rank<T>::value + 1> {};
 
-// 返回数组第N维的大小
+
+
+/*
+	返回数组第N维的大小
+	主模板匹配任意类型，由于不是数组，也就没有第N维的大小，所以值为0
+	偏特化1匹配定长数组T[D]，偏特化2匹配不定长数组T[]，都可以推导出T，由于T可能依然是数组，所以相当于维度-1，于是N也-1，然后递归推导extent<T, N - 1>
+	直到
+		1.T不是数组，匹配主模板，由于N还未减到1，所以最初的实参不存在第N维，于是第N维大小为0
+		2.N减到了1且推导出T[D]，匹配偏特化3，找到了第N维，不用继续递归，D就是第N维的大小
+
+	例：extent<int[3], 2>
+		匹配偏特化1，T = int, N = 2
+		递归extent<int, 1>，第一参数是int，只能匹配主模板，
+		于是int[3]的第2维的大小为0，符合答案
+
+	例：extent<int[3][3][3], 2>
+		匹配偏特化1，T = int[3][3], N = 2
+		递归extent<int[3][3], 1>，第一参数是int[3][3]，第二参数是1，比起偏特化1，更匹配偏特化2
+		于是T= int[3]，N = 1，D = 3，得到答案3，符合
+
+	注意：
+		C++里 T[] 和 T[D]是不同的类型，T[]只能匹配T[]实参，即不定长数组
+		而T[D]可以匹配定长数组，所以需要有两个版本的递归偏特化
+*/
 template<typename T, unsigned int N = 1> struct extent : public integral_constant<unsigned int, 0> {};
 template<typename T, unsigned int N, unsigned int D> struct extent<T[D], N> : public integral_constant<unsigned int, extent<T, N - 1>::value> {};
+template<typename T, unsigned int N> struct extent<T[], N> : public integral_constant<unsigned int, extent<T, N - 1>::value> {};
 template<typename T, unsigned int D> struct extent<T[D], 1> : public integral_constant<unsigned int, D> {};

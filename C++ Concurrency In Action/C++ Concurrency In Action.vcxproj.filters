@@ -35,5 +35,8 @@
     <ClInclude Include="案例1.消息队列.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="5.内存模型和原子操作.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

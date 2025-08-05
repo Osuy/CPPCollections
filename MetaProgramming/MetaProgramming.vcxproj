@@ -134,6 +134,7 @@
     <ClInclude Include="00_综述.h" />
     <ClInclude Include="01_MetaFunction &amp; MetaData.h" />
     <ClInclude Include="CRTP.h" />
+    <ClInclude Include="type_traits.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
