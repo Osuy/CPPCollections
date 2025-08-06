@@ -540,7 +540,7 @@ void Kruskal(const MatGraph& g)
 		将有向带权图的顶点分为两个集合，已求出v到其最短路径的顶点的集合S，和剩余顶点U
 
 		1.初始时，S仅包含v。v到U中任一顶点i的最短路径为e(v, i)的权值（没有边则路径长度为INF）
-		2.选取距离v最近的点u，加入S
+		2.选取距离S最近的点u，加入S
 		3.以u为中间点，若v到u再到其余点的路径的权值和更小，则修改v到对应点最短路径的值
 		4.重复2和3
 
@@ -611,7 +611,7 @@ void Dijkstra(const MatGraph& g,int v)
 
 void Dijkstra(const MatGraph& g, int v)
 {
-	int  path[MAXSIZE];
+	int path[MAXSIZE];
 	int dist[MAXSIZE];
 	int s[MAXSIZE];
 	int i, j, k;
