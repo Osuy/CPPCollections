@@ -1,5 +1,5 @@
 #pragma once
-
+#include <type_traits>
 /*
 	模板参数声明习惯用class而typename，可能是历史原因，或字符数更少。但一些新的库推荐使用typename
 	对于类型用struct而非class，可以省略继承和成员域的public
@@ -15,6 +15,9 @@
 	父类和定义里的推导失败会引起具体的错误
 	void_t就是用来在偏特化参数列表里推导用的
 */
+
+namespace my_traits
+{ 
 // false 常量，对于任何模板参数都是false
 template<typename> constexpr bool _Always_false = false;
 
@@ -140,7 +143,7 @@ template<typename T>struct is_rvalue_reference :bool_constant<is_rvalue_referenc
 		T&& && = T&&
 
 	所以即使把引用传入 add_reference<...> 也是能正确推导出实际的左值与右值的
-	若T = T&，则 void_t<T& &> 推导成功，匹配成功
+	若传入T&，则 void_t<T& &> 推导成功，匹配成功
 	于是 lvalue = T&  & = T&; rvalue = T& && = T&;
 */
 template<typename T, typename = void>
@@ -172,6 +175,18 @@ template<typename T>
 add_rvalue_reference_t<T> declval() noexcept;
 
 // is_pointer
+template<typename T> constexpr bool is_pointer_v = false;
+template<typename T> constexpr bool is_pointer_v<T*> = true;
+template<typename T> constexpr bool is_pointer_v<T* const> = true;
+template<typename T> constexpr bool is_pointer_v<T* volatile> = true;
+template<typename T> constexpr bool is_pointer_v<T* const volatile> = true;
+
+template<typename T> struct is_pointer : bool_constant<is_pointer_v<T>> {};
+
+using nullptr_t = decltype(nullptr);
+
+template<typename T> constexpr bool is_null_pointer_v = is_same_v<remove_cv_t<T>, nullptr_t>;
+template<typename T> struct is_null_pointer : bool_constant<is_null_pointer_v<T>> {};
 
 // remove_pointer 移除指针修饰
 template<typename T>struct remove_pointer					 :identity<T> {};
@@ -223,6 +238,13 @@ template<typename T, size_t N> struct remove_all_extent<T[N]> :remove_all_extent
 
 template <typename T> using remove_all_extent_t = typename remove_all_extent<T>::type;
 
+
+// is_union\is_class 直接通过编译器通过的函数实现
+
+}
 void test()
 {
+	using namespace my_traits;
+	add_reference<int&&>::rvalue;
+	std::add_rvalue_reference_t<int&>;
 }
