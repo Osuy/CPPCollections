@@ -131,6 +131,7 @@
     <ClInclude Include="3.在线程间共享数据.h" />
     <ClInclude Include="4.并发同步.h" />
     <ClInclude Include="5.内存模型和原子操作.h" />
+    <ClInclude Include="6.基于所的并发数据结构.h" />
     <ClInclude Include="案例1.消息队列.h" />
     <ClInclude Include="案例2.自动柜员机.h" />
   </ItemGroup>

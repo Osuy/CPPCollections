@@ -26,5 +26,11 @@
     <ClInclude Include="01_MetaFunction &amp; MetaData.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CRTP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="type_traits.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
